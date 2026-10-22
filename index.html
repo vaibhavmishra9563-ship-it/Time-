@@ -1,0 +1,392 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101b46">
+<title>Vaibhav Mishra | StudySpace</title>
+<style>
+:root {
+  --navy:#101b46;
+  --blue:#4263eb;
+  --purple:#7950f2;
+  --bg:#f4f6fc;
+  --text:#182342;
+  --muted:#75809c;
+  --white:#fff;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:Inter,system-ui,-apple-system,Arial,sans-serif;
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.app{min-height:100vh}
+.sidebar{
+  background:var(--navy);color:white;padding:25px 18px;
+}
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:28px}
+.logo{
+  width:48px;height:48px;border-radius:15px;
+  display:grid;place-items:center;background:#283c83;font-size:25px;
+}
+.brand h2{font-size:18px;margin:0}
+.brand p{font-size:12px;color:#bdc9ee;margin:5px 0 0}
+.nav{display:flex;gap:8px;flex-wrap:wrap}
+.nav button{
+  background:transparent;color:#d7def7;border:0;
+  padding:11px 13px;border-radius:10px;text-align:left;
+}
+.nav button.active,.nav button:hover{background:#2e4fc0;color:white}
+.side-note{
+  margin-top:35px;padding:18px;border-radius:14px;
+  background:#1a2b60;color:#dbe5ff;font-size:13px;line-height:1.8;
+}
+main{padding:22px;min-width:0}
+.topbar{display:flex;justify-content:space-between;gap:12px;
+  align-items:center;margin-bottom:20px}
+.topbar h2{margin:0;font-size:22px}
+.muted{color:var(--muted);font-size:13px}
+.hero{
+  position:relative;overflow:hidden;color:white;padding:27px;
+  border-radius:20px;margin-bottom:22px;
+  background:linear-gradient(115deg,#111b48,#3158c8 68%,#8a63e8);
+}
+.hero:after{
+  content:"✦  ✧  ·  ✦";position:absolute;right:20px;top:15px;
+  font-size:34px;color:#ffffff50;letter-spacing:8px;
+}
+.hero h1{font-size:clamp(25px,4vw,36px);margin:0 0 10px}
+.hero p{margin:0;color:#e1e8ff;line-height:1.7}
+.hero .quote{margin-top:20px;font-size:13px;color:#dbe4ff}
+.stats{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:13px;margin-bottom:22px;
+}
+.stat,.panel{
+  background:white;border:1px solid #e8ecf6;
+  border-radius:17px;padding:19px;
+  box-shadow:0 5px 20px #20336b08;
+}
+.stat .emoji{font-size:22px}
+.stat strong{display:block;font-size:29px;margin:9px 0 4px}
+.stat small{color:var(--muted)}
+.progress{height:6px;background:#e8edfa;border-radius:10px;margin-top:12px;overflow:hidden}
+.progress span{display:block;height:100%;background:linear-gradient(90deg,#4263eb,#9775fa);width:0}
+.content{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:18px}
+.panel h2{font-size:19px;margin:0 0 7px}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:18px}
+label{display:block;font-size:13px;font-weight:650;margin:13px 0 7px}
+input,select,textarea{
+  width:100%;padding:12px;border:1px solid #dce3f1;
+  border-radius:10px;background:#fbfcff;color:var(--text);
+  outline:none;min-width:0;
+}
+input:focus,select:focus,textarea:focus{border-color:#6580f4;box-shadow:0 0 0 3px #4263eb18}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.primary{
+  width:100%;border:0;border-radius:11px;padding:13px;
+  background:linear-gradient(100deg,#315cf0,#8549e8);
+  color:white;font-weight:750;margin-top:17px;
+  box-shadow:0 5px 12px #4263eb25;
+}
+.primary:hover{filter:brightness(1.07)}
+.task{
+  border:1px solid #e8ecf6;border-radius:13px;padding:13px;
+  margin-top:10px;display:flex;gap:10px;align-items:center;
+  min-width:0;transition:background .2s;
+}
+.task.done{background:#f0fbf5}
+.task-info{flex:1;min-width:0}
+.task-title{font-weight:700;overflow-wrap:anywhere}
+.task.done .task-title{text-decoration:line-through;color:#7d8b87}
+.task-meta{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.6}
+.tag{display:inline-block;padding:4px 8px;border-radius:20px;
+  font-size:11px;background:#eef1ff;color:#4258be;margin-top:7px}
+.actions{display:flex;gap:5px;flex-wrap:wrap}
+.small-btn{
+  border:1px solid #e0e6f2;border-radius:8px;
+  padding:8px;background:white;color:#34456c;font-size:12px;
+}
+.small-btn.delete{color:#c73549}
+.empty{text-align:center;color:var(--muted);padding:25px 8px;line-height:1.8}
+.section{scroll-margin-top:20px}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:25px 10px}
+.toast{font-size:13px;color:#167447;margin-top:10px;min-height:18px}
+@media(min-width:900px){
+ .app{display:grid;grid-template-columns:245px minmax(0,1fr)}
+ .sidebar{min-height:100vh}
+ .nav{display:flex;flex-direction:column}
+}
+@media(max-width:899px){
+ .sidebar{padding:15px}
+ .brand{margin-bottom:14px}
+ .nav{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px}
+ .nav button{white-space:nowrap;font-size:13px}
+ main{padding:15px}
+ .content{grid-template-columns:1fr}
+}
+@media(max-width:520px){
+ .stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .stat,.panel{padding:14px}
+ .stat strong{font-size:25px}
+ .hero{padding:22px 17px}
+ .hero:after{font-size:22px}
+ .topbar h2{font-size:18px}
+ .two{gap:9px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand">
+    <div class="logo">📅</div>
+    <div>
+      <h2>Vaibhav Mishra</h2>
+      <p>Student StudySpace</p>
+    </div>
+  </div>
+  <nav class="nav">
+    <button class="active" data-view="home">🏠 Home</button>
+    <button data-view="schedule">🗓️ My Timetable</button>
+    <button data-view="add">➕ Add Task</button>
+    <button data-view="all">📋 All Tasks</button>
+    <button data-view="stats">📈 My Progress</button>
+  </nav>
+  <div class="side-note">
+    ✨ <b>Small steps every day</b><br>
+    Build good habits, use your time wisely, and keep moving towards your dreams.
+    <br><br>Made with ❤️ by<br><b>Vaibhav Mishra</b>
+  </div>
+</aside>
+
+<main>
+  <div class="topbar">
+    <div>
+      <h2 id="greeting">Welcome, Student! 👋</h2>
+      <div class="muted" id="today"></div>
+    </div>
+    <div class="logo">🚀</div>
+  </div>
+
+  <section class="hero">
+    <h1>Plan Smart. Study Better.</h1>
+    <p>Your time is valuable. Make every day count.</p>
+    <div class="quote">“Discipline today, success tomorrow.” — Vaibhav Mishra</div>
+  </section>
+
+  <section class="stats section" id="stats">
+    <div class="stat"><span class="emoji">📝</span><strong id="total">0</strong><small>Total tasks</small></div>
+    <div class="stat"><span class="emoji">✅</span><strong id="completed">0</strong><small>Completed</small><div class="progress"><span id="bar"></span></div></div>
+    <div class="stat"><span class="emoji">⏳</span><strong id="pending">0</strong><small>Pending</small></div>
+    <div class="stat"><span class="emoji">🎯</span><strong id="percent">0%</strong><small>Progress</small></div>
+  </section>
+
+  <div class="content">
+    <section class="panel section" id="add">
+      <h2>✨ Create Your Timetable</h2>
+      <p class="muted">Add your studies, college, work and breaks.</p>
+      <form id="taskForm">
+        <label for="title">Task or subject</label>
+        <input id="title" maxlength="100" required placeholder="e.g. Python practice">
+
+        <div class="two">
+          <div><label for="day">Day</label>
+            <select id="day">
+              <option>Monday</option><option>Tuesday</option>
+              <option>Wednesday</option><option>Thursday</option>
+              <option>Friday</option><option>Saturday</option><option>Sunday</option>
+            </select>
+          </div>
+          <div><label for="category">Category</label>
+            <select id="category">
+              <option>Study</option><option>College</option>
+              <option>Homework</option><option>Work</option>
+              <option>Break</option><option>Personal</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="two">
+          <div><label for="start">Start time</label><input id="start" type="time" required></div>
+          <div><label for="end">End time</label><input id="end" type="time" required></div>
+        </div>
+        <button class="primary" type="submit">＋ Add to My Timetable</button>
+        <div class="toast" id="message" role="status"></div>
+      </form>
+    </section>
+
+    <section class="panel section" id="schedule">
+      <div class="panel-head">
+        <div><h2>🗓️ My Schedule</h2><p class="muted">Your weekly plan at a glance.</p></div>
+      </div>
+      <label for="filterDay">Show tasks for</label>
+      <select id="filterDay">
+        <option value="All">All Days</option>
+        <option>Monday</option><option>Tuesday</option>
+        <option>Wednesday</option><option>Thursday</option>
+        <option>Friday</option><option>Saturday</option><option>Sunday</option>
+      </select>
+      <div id="tasks"></div>
+    </section>
+  </div>
+  <footer>© <span id="year"></span> Vaibhav Mishra · Plan • Learn • Grow 💙</footer>
+</main>
+</div>
+
+<script>
+const KEY = "vaibhavStudySpaceTasks";
+const days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+const $ = id => document.getElementById(id);
+let tasks = [];
+
+try {
+  const saved = JSON.parse(localStorage.getItem(KEY) || "[]");
+  if (Array.isArray(saved)) tasks = saved.filter(t =>
+    t && typeof t.id === "string" &&
+    typeof t.title === "string" &&
+    days.includes(t.day) &&
+    typeof t.start === "string" &&
+    typeof t.end === "string" &&
+    typeof t.done === "boolean"
+  );
+} catch { tasks = []; }
+
+const now = new Date();
+$("today").textContent = now.toLocaleDateString("en-IN", {
+  weekday:"long", day:"numeric", month:"long", year:"numeric"
+});
+$("year").textContent = now.getFullYear();
+const hour = now.getHours();
+$("greeting").textContent =
+  (hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening")
+  + ", Vaibhav! 👋";
+
+function save() {
+  try {
+    localStorage.setItem(KEY, JSON.stringify(tasks));
+    render();
+    $("message").textContent = "✓ Your timetable is saved in this browser!";
+  } catch {
+    $("message").textContent = "Unable to save. Check browser storage settings.";
+  }
+}
+
+function render() {
+  const done = tasks.filter(t => t.done).length;
+  const percent = tasks.length ? Math.round(done / tasks.length * 100) : 0;
+  $("total").textContent = tasks.length;
+  $("completed").textContent = done;
+  $("pending").textContent = tasks.length - done;
+  $("percent").textContent = percent + "%";
+  $("bar").style.width = percent + "%";
+
+  const filter = $("filterDay").value;
+  const shown = tasks.filter(t => filter === "All" || t.day === filter)
+    .sort((a,b) => days.indexOf(a.day) - days.indexOf(b.day)
+      || a.start.localeCompare(b.start));
+  const container = $("tasks");
+  container.replaceChildren();
+
+  if (!shown.length) {
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.textContent = "🌱 Your schedule starts here! Add your first task.";
+    container.append(empty);
+    return;
+  }
+
+  shown.forEach(t => {
+    const card = document.createElement("div");
+    card.className = "task" + (t.done ? " done" : "");
+    const info = document.createElement("div");
+    info.className = "task-info";
+
+    const title = document.createElement("div");
+    title.className = "task-title";
+    title.textContent = t.title;
+    const meta = document.createElement("div");
+    meta.className = "task-meta";
+    meta.textContent = `${t.day} · ${t.start}–${t.end}`;
+    const tag = document.createElement("span");
+    tag.className = "tag";
+    tag.textContent = t.category;
+    info.append(title, meta, tag);
+
+    const actions = document.createElement("div");
+    actions.className = "actions";
+    const toggle = document.createElement("button");
+    toggle.className = "small-btn";
+    toggle.textContent = t.done ? "↩ Undo" : "✓ Done";
+    toggle.setAttribute("aria-label", (t.done ? "Undo " : "Complete ") + t.title);
+    toggle.addEventListener("click", () => {
+      t.done = !t.done;
+      save();
+    });
+
+    const remove = document.createElement("button");
+    remove.className = "small-btn delete";
+    remove.textContent = "✕";
+    remove.setAttribute("aria-label", "Delete " + t.title);
+    remove.addEventListener("click", () => {
+      if (confirm("Delete this task?")) {
+        tasks = tasks.filter(x => x.id !== t.id);
+        save();
+      }
+    });
+    actions.append(toggle, remove);
+    card.append(info, actions);
+    container.append(card);
+  });
+}
+
+$("taskForm").addEventListener("submit", event => {
+  event.preventDefault();
+  const title = $("title").value.trim();
+  const day = $("day").value;
+  const category = $("category").value;
+  const start = $("start").value;
+  const end = $("end").value;
+
+  if (!title || !start || !end || start >= end) {
+    $("message").textContent = "Please enter a valid task and time range.";
+    return;
+  }
+
+  const conflict = tasks.some(t =>
+    t.day === day && start < t.end && end > t.start
+  );
+  if (conflict) {
+    $("message").textContent = "⚠️ This time overlaps another task on that day.";
+    return;
+  }
+
+  tasks.push({
+    id: Date.now().toString() + Math.random().toString(16).slice(2),
+    title, day, category, start, end, done:false
+  });
+  save();
+  $("taskForm").reset();
+});
+
+$("filterDay").addEventListener("change", render);
+document.querySelectorAll("[data-view]").forEach(button => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll("[data-view]").forEach(b => b.classList.remove("active"));
+    button.classList.add("active");
+    const target = button.dataset.view;
+    const element = target === "home" ? document.querySelector(".hero")
+      : target === "all" ? $("schedule")
+      : $(target);
+    if (element) element.scrollIntoView({behavior:"smooth", block:"start"});
+    if (target === "all") $("filterDay").value = "All";
+    if (target === "schedule" || target === "all") render();
+  });
+});
+render();
+</script>
+</body>
+</html>
